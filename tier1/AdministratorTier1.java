@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 import static common.CustomerRemote.T2_SERVICE_NAME;
 
-public class Tier11 {
+public class AdministratorTier1
+{
     public static void main( String[] args )
     {
         try {

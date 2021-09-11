@@ -14,7 +14,7 @@ import java.util.Scanner;
 import static common.CustomerRemote.T2_SERVICE_NAME;
 
 
-public class Tier1
+public class CustomerTier1
 {
 	// Just a simple test driver. Should be client
 	

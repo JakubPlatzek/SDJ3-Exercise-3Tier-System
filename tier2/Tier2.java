@@ -5,12 +5,16 @@
 
 package tier2;
 
+import tier1.CustomerTier1;
+
 public class Tier2
 {
 	public static void main( String[] args )
 	{
 		try {
-			Tier2Controller controller = new Tier2Controller();
+			ClerkTier2 clerkTier2 = new ClerkTier2();
+			CustomerTier2 customerTier2 = new CustomerTier2();
+			AdministratorTier2 administratorTier2 = new AdministratorTier2();
 			
 			System.out.println( "Tier2 ready" );
 		} catch( Exception ex ) {

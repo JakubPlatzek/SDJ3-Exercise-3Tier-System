@@ -21,12 +21,12 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 
-public class Tier2Controller
+public class ClerkTier2
         extends UnicastRemoteObject
-        implements CustomerRemote, AdministratorRemote, ClerkRemote {
+        implements ClerkRemote {
     private ITier3 tier3;
 
-    public Tier2Controller()
+    public ClerkTier2()
             throws RemoteException {
         try {
             Naming.rebind("server", this);
@@ -55,16 +55,6 @@ public class Tier2Controller
         }
     }
 
-    @Override
-    public boolean createAccount(int accountNumber) throws RemoteException {
-        if (tier3.getAccount(accountNumber) == null) {
-            Account account = new Account(accountNumber, 0.0);
-            return tier3.createAccount(account);
-        } else {
-            System.out.println("Account with this number already exists.");
-            return false;
-        }
-    }
 
     @Override
     public boolean deposit(int number, double balance) throws RemoteException {
