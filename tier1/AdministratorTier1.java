@@ -15,7 +15,7 @@ public class AdministratorTier1
         try {
             AdministratorRemote tier2 = (AdministratorRemote) Naming.lookup("server");
 
-            Scanner scanner = new Scanner(System.in);
+         /*   Scanner scanner = new Scanner(System.in);
             boolean running = true;
 
             while (running){
@@ -28,7 +28,7 @@ public class AdministratorTier1
                 else {
                     System.out.println(accountNumber + " was not created");
                 }
-            }
+            }*/
         } catch( Exception ex ) {
             ex.printStackTrace();
         }

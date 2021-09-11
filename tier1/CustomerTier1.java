@@ -23,7 +23,7 @@ public class CustomerTier1
 		try {
 			CustomerRemote tier2 = (CustomerRemote) Naming.lookup("server");
 
-			Scanner scanner = new Scanner(System.in);
+			/*Scanner scanner = new Scanner(System.in);
 			boolean running = true;
 
 			while (running){
@@ -38,7 +38,7 @@ public class CustomerTier1
 				else{
 					System.out.println("Not possible");
 				}
-			}
+			}*/
 
 		} catch( Exception ex ) {
 			ex.printStackTrace();

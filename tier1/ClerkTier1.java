@@ -15,7 +15,7 @@ public class ClerkTier1
         try {
             ClerkRemote tier2 = (ClerkRemote) Naming.lookup("server");
 
-            Scanner scanner = new Scanner(System.in);
+           /* Scanner scanner = new Scanner(System.in);
             boolean running = true;
 
             while (running){
@@ -51,7 +51,7 @@ public class ClerkTier1
                     default:
                         running = false;
                 }
-            }
+            }*/
 
         } catch( Exception ex ) {
             ex.printStackTrace();
