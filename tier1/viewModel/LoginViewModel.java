@@ -10,16 +10,20 @@ public class LoginViewModel
 {
   private CustomerModel model;
   private IntegerProperty accountNumber;
+  private ViewState vs;
 
-  public LoginViewModel(CustomerModel model)
+  public LoginViewModel(CustomerModel model, ViewState vs)
   {
     this.model = model;
+    this.vs = vs;
     accountNumber = new SimpleIntegerProperty();
   }
 
   public boolean login() throws RemoteException
   {
-    return model.login(accountNumber.get());
+    boolean result = model.login(accountNumber.get());
+    vs.setAccountNumber(accountNumber.get());
+    return result;
   }
 
   public CustomerModel getModel(){

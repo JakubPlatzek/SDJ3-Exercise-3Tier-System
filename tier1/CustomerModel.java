@@ -23,4 +23,21 @@ public class CustomerModel
   {
     return tier2.accountExist(accountNumber);
   }
+
+  public double getBalance(int accountNumber) throws RemoteException
+  {
+    return tier2.getBalance(accountNumber);
+  }
+
+  public void withdraw(int accountNumber, double amount){
+    try{
+      tier2.withdraw(accountNumber, amount);
+    }catch (Exception e){
+      System.err.println(e);
+    }
+  }
+
+  public void logout(int accountNumber){
+//    tier2.logout(accountNumber, this)
+  }
 }

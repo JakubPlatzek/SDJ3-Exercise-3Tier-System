@@ -2,6 +2,8 @@ package tier1.viewModel;
 
 import tier1.CustomerModel;
 
+import java.rmi.RemoteException;
+
 public class ViewModelFactory
 {
   private CustomerViewModel customerViewmodel;
@@ -9,11 +11,13 @@ public class ViewModelFactory
   private ClerkViewModel clerkViewModel;
   private LoginViewModel loginViewModel;
 
-  public ViewModelFactory(CustomerModel cm){
-    customerViewmodel = new CustomerViewModel();
+  public ViewModelFactory(CustomerModel cm) throws RemoteException
+  {
+    ViewState vs = new ViewState();
+    customerViewmodel = new CustomerViewModel(cm, vs);
     administratorViewModel = new AdministratorViewModel();
     clerkViewModel = new ClerkViewModel();
-    loginViewModel = new LoginViewModel(cm);
+    loginViewModel = new LoginViewModel(cm, vs);
   }
   public CustomerViewModel getCustomerViewmodel()
   {

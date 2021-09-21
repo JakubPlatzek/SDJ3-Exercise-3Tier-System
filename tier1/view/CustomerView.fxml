@@ -12,5 +12,7 @@
       <Label layoutX="108.0" layoutY="192.0" text="Amount to withdraw" />
       <Label fx:id="errorLabel" layoutX="129.0" layoutY="259.0" prefHeight="17.0" prefWidth="349.0" text="Label" textFill="RED" />
       <Label fx:id="accountNumberLabel" layoutX="254.0" layoutY="104.0" prefHeight="16.0" prefWidth="40.0" text="Label" />
+      <Label fx:id="balanceLabel" layoutX="256.0" layoutY="143.0" text="Label" />
+      <Label layoutX="175.0" layoutY="143.0" text="Balance" />
    </children>
 </AnchorPane>
