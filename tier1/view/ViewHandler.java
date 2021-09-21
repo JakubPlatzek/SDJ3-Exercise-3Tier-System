@@ -27,7 +27,7 @@ public class ViewHandler extends ViewCreator
   public void start(Stage primaryStage) throws IOException
   {
     this.primaryStage = primaryStage;
-    openView("EntryView.fxml");
+    openView("LoginView.fxml");
   }
 
   public Stage getPrimaryStage() {
@@ -38,7 +38,7 @@ public class ViewHandler extends ViewCreator
     Region root = super.getViewController(id).getRoot();
     currentScene.setRoot(root);
     // CSS file
-    currentScene.getStylesheets().add("stylesheets/market.css");
+//    currentScene.getStylesheets().add("stylesheets/market.css");
     title = id;
     if (root.getUserData() != null) {
       title += root.getUserData();

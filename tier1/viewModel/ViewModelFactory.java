@@ -1,15 +1,19 @@
 package tier1.viewModel;
 
+import tier1.CustomerModel;
+
 public class ViewModelFactory
 {
   private CustomerViewModel customerViewmodel;
   private AdministratorViewModel administratorViewModel;
   private ClerkViewModel clerkViewModel;
+  private LoginViewModel loginViewModel;
 
-  public ViewModelFactory(){
+  public ViewModelFactory(CustomerModel cm){
     customerViewmodel = new CustomerViewModel();
     administratorViewModel = new AdministratorViewModel();
     clerkViewModel = new ClerkViewModel();
+    loginViewModel = new LoginViewModel(cm);
   }
   public CustomerViewModel getCustomerViewmodel()
   {
@@ -26,4 +30,8 @@ public class ViewModelFactory
     return clerkViewModel;
   }
 
+  public LoginViewModel getLoginViewModel()
+  {
+    return loginViewModel;
+  }
 }

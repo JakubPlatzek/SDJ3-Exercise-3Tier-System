@@ -5,43 +5,50 @@
 
 package tier1;
 
-import common.AdministratorRemote;
-import common.CustomerRemote;
+import common.ITier2;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import tier1.view.ViewHandler;
+import tier1.viewModel.ViewModelFactory;
 
 import java.rmi.Naming;
 import java.util.Scanner;
 
-import static common.CustomerRemote.T2_SERVICE_NAME;
 
 
-public class CustomerTier1
+public class CustomerTier1 extends Application
 {
-	// Just a simple test driver. Should be client
-	
-	public static void main( String[] args )
+	@Override public void start(Stage stage) throws Exception
 	{
-		try {
-			CustomerRemote tier2 = (CustomerRemote) Naming.lookup("server");
+		CustomerModel cm = new CustomerModel();
+		ViewModelFactory vmf = new ViewModelFactory(cm);
+		ViewHandler vh = new ViewHandler(vmf);
+		vh.start(stage);
+//		try {
+//			ITier2 tier2 = (ITier2) Naming.lookup(ITier2.T2_SERVICE_NAME);
+//
+//			Scanner scanner = new Scanner(System.in);
+//			boolean running = true;
+//
+//			while (running){
+//				System.out.print("Enter account number: ");
+//				int accountNumber = scanner.nextInt();
+//				scanner.nextLine();
+//				double balance = tier2.getBalance(accountNumber);
+//				System.out.println("Current balance: " + balance);
+//				System.out.print("Enter amount to withdraw: ");
+//				double amount = scanner.nextDouble();
+//				if (tier2.withdraw(accountNumber,amount)){
+//					System.out.println(amount + " was withdrawn");
+//				}
+//				else{
+//					System.out.println("Not possible");
+//				}
+//			}
+//
+//		} catch( Exception ex ) {
+//			ex.printStackTrace();
+//		}
 
-			/*Scanner scanner = new Scanner(System.in);
-			boolean running = true;
-
-			while (running){
-				System.out.print("Enter account number: ");
-				int accountNumber = scanner.nextInt();
-				scanner.nextLine();
-				System.out.print("Enter amount to withdraw: ");
-				double amount = scanner.nextDouble();
-				if (tier2.withdraw(accountNumber,amount)){
-					System.out.println(amount + " was withdrawn");
-				}
-				else{
-					System.out.println("Not possible");
-				}
-			}*/
-
-		} catch( Exception ex ) {
-			ex.printStackTrace();
-		}
 	}
 }

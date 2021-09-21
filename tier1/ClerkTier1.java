@@ -1,21 +1,19 @@
 package tier1;
 
-import common.ClerkRemote;
-import common.CustomerRemote;
+import common.ITier2;
 
 import java.rmi.Naming;
 import java.util.Scanner;
 
-import static common.CustomerRemote.T2_SERVICE_NAME;
 
 public class ClerkTier1
 {
     public static void main( String[] args )
     {
         try {
-            ClerkRemote tier2 = (ClerkRemote) Naming.lookup("server");
+            ITier2 tier2 = (ITier2) Naming.lookup(ITier2.T2_SERVICE_NAME);
 
-           /* Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             boolean running = true;
 
             while (running){
@@ -26,6 +24,8 @@ public class ClerkTier1
                         System.out.print("Enter account number: ");
                         int accountNumber = scanner.nextInt();
                         scanner.nextLine();
+                        double balance = tier2.getBalance(accountNumber);
+                        System.out.println("Current balance: " + balance);
                         System.out.print("Enter amount to withdraw: ");
                         double amount = scanner.nextDouble();
                         scanner.nextLine();
@@ -39,6 +39,8 @@ public class ClerkTier1
                         System.out.print("Enter account number: ");
                         accountNumber = scanner.nextInt();
                         scanner.nextLine();
+                        balance = tier2.getBalance(accountNumber);
+                        System.out.println("Current balance: " + balance);
                         System.out.print("Enter amount to deposit: ");
                         amount = scanner.nextDouble();
                         scanner.nextLine();
@@ -51,7 +53,7 @@ public class ClerkTier1
                     default:
                         running = false;
                 }
-            }*/
+            }
 
         } catch( Exception ex ) {
             ex.printStackTrace();

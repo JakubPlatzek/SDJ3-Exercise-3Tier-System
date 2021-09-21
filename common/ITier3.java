@@ -21,7 +21,6 @@ public interface ITier3
 	public void updateAccount(Account account) throws RemoteException;
 
 	public boolean createAccount(Account account) throws RemoteException;
-	
-	
+
 	public static final String T3_SERVICE_NAME = "rmi://localhost/T3";
 }

@@ -1,21 +1,19 @@
 package tier1;
 
-import common.AdministratorRemote;
-import common.CustomerRemote;
+import common.ITier2;
 
 import java.rmi.Naming;
 import java.util.Scanner;
 
-import static common.CustomerRemote.T2_SERVICE_NAME;
 
 public class AdministratorTier1
 {
     public static void main( String[] args )
     {
         try {
-            AdministratorRemote tier2 = (AdministratorRemote) Naming.lookup("server");
+            ITier2 tier2 = (ITier2) Naming.lookup(ITier2.T2_SERVICE_NAME);
 
-         /*   Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             boolean running = true;
 
             while (running){
@@ -28,7 +26,7 @@ public class AdministratorTier1
                 else {
                     System.out.println(accountNumber + " was not created");
                 }
-            }*/
+            }
         } catch( Exception ex ) {
             ex.printStackTrace();
         }
