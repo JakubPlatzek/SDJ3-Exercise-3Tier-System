@@ -1,5 +1,6 @@
 package tier2;
 
+import common.ITier1;
 import common.ITier2;
 import common.ITier3;
 import model.Account;
@@ -7,15 +8,19 @@ import model.Account;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import static common.ITier3.T3_SERVICE_NAME;
 
 public class Tier2Controller extends UnicastRemoteObject implements ITier2
 {
   private ITier3 tier3;
+  private Map<ITier1, Integer> connectedClients;
 
   public Tier2Controller() throws RemoteException
   {
+    connectedClients = new HashMap<>();
     try {
       Naming.rebind("T2", this);
 
@@ -45,6 +50,31 @@ public class Tier2Controller extends UnicastRemoteObject implements ITier2
     return tier3.getAccount(accountNumber).getBalance();
   }
 
+  @Override public boolean login(int accountNumber, ITier1 client)
+      throws RemoteException
+  {
+    boolean result = accountExist(accountNumber);
+    if (result){
+      connectedClients.put(client, accountNumber);
+    }
+    return result;
+  }
+
+  @Override public void logout(int accountNumber, ITier1 client)
+      throws RemoteException
+  {
+    connectedClients.remove(client);
+  }
+
+  private void callback(Account account) throws RemoteException
+  {
+    for (Map.Entry<ITier1, Integer> entry: connectedClients.entrySet()){
+      if (entry.getValue() == account.getNumber()){
+        entry.getKey().updateBalance(account.getBalance());
+      }
+    }
+  }
+
   @Override public boolean accountExist(int accountNumber)
       throws RemoteException
   {
@@ -57,6 +87,7 @@ public class Tier2Controller extends UnicastRemoteObject implements ITier2
     if (account != null) {
       account.updateBalance(balance);
       tier3.updateAccount(account);
+      callback(account);
       return true;
     }
     return false;
@@ -75,7 +106,7 @@ public class Tier2Controller extends UnicastRemoteObject implements ITier2
     else {
       account.updateBalance(-amount);
       tier3.updateAccount(account);
-
+      callback(account);
       return true;
     }
   }
