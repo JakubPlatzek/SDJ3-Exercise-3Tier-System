@@ -6,18 +6,16 @@
 package tier1;
 
 import common.ITier2;
-import javafx.application.Application;
-import javafx.stage.Stage;
+
 import java.rmi.Naming;
 import java.util.Scanner;
 
 
 
-public class CustomerTier1 extends Application
+public class CustomerTier1
 {
-	@Override public void start(Stage stage)
+	public static void main(String[] args)
 	{
-
 		try {
 			ITier2 tier2 = (ITier2) Naming.lookup(ITier2.T2_SERVICE_NAME);
 
