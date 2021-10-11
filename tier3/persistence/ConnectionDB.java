@@ -17,6 +17,7 @@ public class ConnectionDB {
     private final static String PASSWORD = "postgres";
 
 
+
     private ConnectionDB() throws SQLException {
         DriverManager.registerDriver(new org.postgresql.Driver());
     }
