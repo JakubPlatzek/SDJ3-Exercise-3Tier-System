@@ -5,21 +5,15 @@
 
 package tier2;
 
-import common.ITier2;
-import tier1.CustomerTier1;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.rmi.server.UnicastRemoteObject;
-
+@SpringBootApplication
 public class Tier2
 {
 	public static void main( String[] args )
 	{
-		try {
-			Tier2Controller t2c = new Tier2Controller();
-			
+		SpringApplication.run(Tier2.class, args);
 			System.out.println( "Tier2 ready" );
-		} catch( Exception ex ) {
-			ex.printStackTrace();
-		}
 	}
 }

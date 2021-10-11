@@ -1,53 +1,39 @@
 package tier1;
 
-import common.ITier1;
-import common.ITier2;
-
-import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 
-public class ClerkTier1 extends UnicastRemoteObject implements ITier1
+public class ClerkTier1
 {
-    private ITier2 tier2;
+    private Rest rest;
 
-    public ClerkTier1() throws RemoteException
+    public ClerkTier1()
     {
-        super();
-        try{
-            tier2 = (ITier2) Naming.lookup(ITier2.T2_SERVICE_NAME);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        rest = new Rest();
     }
 
-    public boolean login(int accountNumber) throws RemoteException
+    public boolean login(int accountNumber)
     {
-        return tier2.login(accountNumber, this);
+        return rest.getBalance(accountNumber) >= 0.0;
     }
 
-    public void logout(int accountNumber) throws RemoteException
-    {
-        tier2.logout(accountNumber,this);
-    }
 
-    public double getBalance(int accountNumber) throws RemoteException
+    public double getBalance(int accountNumber)
     {
-        return tier2.getBalance(accountNumber);
+        return rest.getBalance(accountNumber);
     }
 
     public boolean withdraw(int accountNumber, double amount)
         throws RemoteException
     {
-        return tier2.withdraw(accountNumber,amount);
+        return rest.withdraw(accountNumber,amount);
     }
 
     public boolean deposit(int accountNumber, double amount)
         throws RemoteException
     {
-        return tier2.deposit(accountNumber, amount);
+        return rest.deposit(accountNumber, amount);
     }
 
     public static void main( String[] args )
@@ -73,6 +59,8 @@ public class ClerkTier1 extends UnicastRemoteObject implements ITier1
                 System.out.println("Current balance: " + balance);
                 while (result)
                 {
+                    balance = ct1.getBalance(accountNumber);
+                    System.out.println("Current balance: " + balance);
                     System.out.println("1. Withdraw\n2. Deposit\n*. Logout");
                     String choice = scanner.nextLine();
                     switch (choice)
@@ -104,7 +92,7 @@ public class ClerkTier1 extends UnicastRemoteObject implements ITier1
                             }
                             break;
                         default:
-                            ct1.logout(accountNumber);
+
                             running = false;
                     }
                 }
@@ -113,10 +101,5 @@ public class ClerkTier1 extends UnicastRemoteObject implements ITier1
         } catch( Exception ex ) {
             ex.printStackTrace();
         }
-    }
-
-    @Override public void updateBalance(double balance) throws RemoteException
-    {
-        System.out.println("Current balance: " + balance);
     }
 }

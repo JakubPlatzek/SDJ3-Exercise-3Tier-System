@@ -5,60 +5,34 @@
 
 package tier1;
 
-import common.ITier1;
-import common.ITier2;
-import model.Account;
-
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 
 
-public class CustomerTier1 extends UnicastRemoteObject implements ITier1
+public class CustomerTier1
 {
-	private ITier2 tier2;
+	private Rest rest;
 
-	CustomerTier1() throws RemoteException
+	CustomerTier1()
 	{
-		super();
-		try
-		{
-			this.tier2 = (ITier2) Naming.lookup(ITier2.T2_SERVICE_NAME);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		rest = new Rest();
 	}
 
-	public boolean login(int accountNumber) throws RemoteException
+	public boolean login(int accountNumber)
 	{
-		return tier2.login(accountNumber,this);
+		return rest.getBalance(accountNumber) >= 0.0;
 	}
 
-	public double getBalance(int accountNumber) throws RemoteException
+	public double getBalance(int accountNumber)
 	{
-		return tier2.getBalance(accountNumber);
+		return rest.getBalance(accountNumber);
 	}
 
 	public boolean withdraw(int accountNumber, double amount)
 			throws RemoteException
 	{
-		return tier2.withdraw(accountNumber,amount);
-	}
-
-	public void logout(int accountNumber) throws RemoteException
-	{
-		tier2.logout(accountNumber, this);
-	}
-
-	@Override public void updateBalance(double balance) throws RemoteException
-	{
-		System.out.println("Current balance: " + balance);
+		return rest.withdraw(accountNumber,amount);
 	}
 
 	public static void main(String[] args)
@@ -69,10 +43,6 @@ public class CustomerTier1 extends UnicastRemoteObject implements ITier1
 
 			Scanner scanner = new Scanner(System.in);
 			boolean running = true;
-
-
-
-
 
 			while (running){
 				System.out.print("Enter account number to login, 0 for exit: ");
@@ -87,11 +57,12 @@ public class CustomerTier1 extends UnicastRemoteObject implements ITier1
 				System.out.println("Current balance: " + balance);
 				while(result)
 				{
+					balance = ct1.getBalance(accountNumber);
+					System.out.println("Current balance: " + balance);
 					System.out.print("Enter amount to withdraw, 0 for exit: ");
 					double amount = scanner.nextDouble();
 					if (amount == 0)
 					{
-						ct1.logout(accountNumber);
 						System.out.println("Logging out");
 						break;
 					}

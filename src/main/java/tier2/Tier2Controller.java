@@ -1,29 +1,26 @@
 package tier2;
 
-import common.ITier1;
-import common.ITier2;
+import com.google.gson.Gson;
 import common.ITier3;
 import model.Account;
+import model.Request;
+import org.springframework.web.bind.annotation.*;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.Map;
 
 import static common.ITier3.T3_SERVICE_NAME;
 
-public class Tier2Controller extends UnicastRemoteObject implements ITier2
+@RestController
+public class Tier2Controller
 {
   private ITier3 tier3;
-  private Map<ITier1, Integer> connectedClients;
 
-  public Tier2Controller() throws RemoteException
+  public Tier2Controller()
   {
-    connectedClients = new HashMap<>();
     try {
-      Naming.rebind("T2", this);
-
       tier3 = (ITier3) Naming.lookup(T3_SERVICE_NAME);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -31,8 +28,8 @@ public class Tier2Controller extends UnicastRemoteObject implements ITier2
     }
   }
 
-  @Override
-  public boolean createAccount(int accountNumber) throws RemoteException {
+  @PutMapping("/account/{accountNumber}")
+  public synchronized boolean createAccount(@PathVariable int accountNumber) throws RemoteException {
     if (tier3.getAccount(accountNumber) == null) {
       Account account = new Account(accountNumber, 0.0);
       return tier3.createAccount(account);
@@ -41,75 +38,39 @@ public class Tier2Controller extends UnicastRemoteObject implements ITier2
       return false;
     }
   }
+  @GetMapping("/account/{accountNumber}")
+ public synchronized String getBalance(@PathVariable int accountNumber) throws RemoteException {
+   if (tier3.getAccount(accountNumber) == null) {
+     return ""+0;
+   }
+   return ""+tier3.getAccount(accountNumber).getBalance();
+ }
 
-  @Override public double getBalance(int accountNumber) throws RemoteException
-  {
-    if (tier3.getAccount(accountNumber) == null) {
-      return 0;
-    }
-    return tier3.getAccount(accountNumber).getBalance();
-  }
 
-  @Override public boolean login(int accountNumber, ITier1 client)
-      throws RemoteException
-  {
-    boolean result = accountExist(accountNumber);
-    if (result){
-      connectedClients.put(client, accountNumber);
-    }
-    return result;
-  }
-
-  @Override public void logout(int accountNumber, ITier1 client)
-      throws RemoteException
-  {
-    connectedClients.remove(client);
-  }
-
-  private void callback(Account account) throws RemoteException
-  {
-    for (Map.Entry<ITier1, Integer> entry: connectedClients.entrySet()){
-      if (entry.getValue() == account.getNumber()){
-        entry.getKey().updateBalance(account.getBalance());
+ @PostMapping("/account/{accountNumber}")
+  public synchronized boolean updateBalance(@PathVariable int accountNumber, @RequestBody String request) throws RemoteException {
+    Account account = tier3.getAccount(accountNumber);
+    Request req = new Gson().fromJson(request, Request.class);
+    if (req.getRequestType().equals("deposit")) {
+      if (account != null) {
+        account.updateBalance(req.getAmount());
+        //should check if amount is positive
+        tier3.updateAccount(account);
+        return true;
       }
     }
-  }
-
-  @Override public boolean accountExist(int accountNumber)
-      throws RemoteException
-  {
-    return tier3.getAccount(accountNumber) != null;
-  }
-
-  @Override
-  public boolean deposit(int number, double balance) throws RemoteException {
-    Account account = tier3.getAccount(number);
-    if (account != null) {
-      account.updateBalance(balance);
-      tier3.updateAccount(account);
-      callback(account);
-      return true;
+    else {
+      if (account == null)
+        return false;
+      else if (req.getAmount() <= 0.0 || req.getAmount() > account.getBalance())
+        return false;
+      else {
+        account.updateBalance(-req.getAmount());
+        tier3.updateAccount(account);
+        return true;
+      }
     }
     return false;
   }
-
-  @Override
-  public boolean withdraw(int accountNumber, double amount)
-      throws RemoteException
-  {
-    Account account = tier3.getAccount(accountNumber);
-
-    if (account == null)
-      return false;
-    else if (amount <= 0.0 || amount > account.getBalance())
-      return false;
-    else {
-      account.updateBalance(-amount);
-      tier3.updateAccount(account);
-      callback(account);
-      return true;
-    }
-  }
-
 
 }
