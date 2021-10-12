@@ -25,13 +25,11 @@ public class ClerkTier1
     }
 
     public boolean withdraw(int accountNumber, double amount)
-        throws RemoteException
     {
         return rest.withdraw(accountNumber,amount);
     }
 
     public boolean deposit(int accountNumber, double amount)
-        throws RemoteException
     {
         return rest.deposit(accountNumber, amount);
     }

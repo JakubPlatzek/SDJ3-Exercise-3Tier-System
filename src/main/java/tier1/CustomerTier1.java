@@ -30,7 +30,6 @@ public class CustomerTier1
 	}
 
 	public boolean withdraw(int accountNumber, double amount)
-			throws RemoteException
 	{
 		return rest.withdraw(accountNumber,amount);
 	}
